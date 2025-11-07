@@ -1,0 +1,36 @@
+{
+  "name": "@andrewheberle/ts-slog",
+  "version": "1.0.0",
+  "description": "Simple structured logger for TypeScript",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "logger",
+    "logging",
+    "typescript"
+  ],
+  "author": "Andrew Heberle (https://github.com/andrewheberle)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrewheberle/ts-slog/issues"
+  },
+  "homepage": "https://github.com/andrewheberle/ts-slog#readme",
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "typescript": "^5.9.3"
+  }
+}
