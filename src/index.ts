@@ -1,5 +1,6 @@
 export interface LoggerSettings {
-    minLevel: number
+    logHandler?(output: Record<string, unknown>): void
+    minLevel?: number
 }
 
 // log levels
@@ -20,11 +21,12 @@ export class LoggerError extends Error {
 }
 
 export class Logger {
-    public settings: LoggerSettings
+    public settings: Required<LoggerSettings>
 
     constructor(settings?: LoggerSettings) {
         this.settings = {
             minLevel: settings?.minLevel ?? 1,
+            logHandler: settings?.logHandler ?? console.log,
         }
     }
 
@@ -49,7 +51,7 @@ export class Logger {
             output[key] = value
         }
 
-        console.log(output)
+        this.settings.logHandler(output)
     }
 
     /**

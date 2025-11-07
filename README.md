@@ -74,6 +74,7 @@ Creates a new logger instance.
 
 **Parameters:**
 - `settings` (optional): Configuration object
+  - `logHandler`: Handler to output logs (default: `console.log`)
   - `minLevel`: Minimum log level (default: `LogLevel.Info`)
 
 ### Methods
