@@ -48,6 +48,7 @@ logger.error("This will be logged too")
 ### Adding Context
 
 Add key-value pairs to log entries by passing additional arguments:
+
 ```typescript
 logger.info(
     "User logged in",
@@ -83,6 +84,7 @@ Creates a new logger instance.
 - `info(message: string, ...args: unknown[]): void` - Log at INFO level
 - `warn(message: string, ...args: unknown[]): void` - Log at WARNING level
 - `error(message: string, ...args: unknown[]): void` - Log at ERROR level
+- `with(...args: unknown[]): Logger` - Returns a new `Logger` with additional K/V pairs added
 
 All methods accept a message string followed by optional key-value pairs.
 
