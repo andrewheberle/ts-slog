@@ -115,11 +115,11 @@ Creates a new logger instance.
 - `error(message: string, ...args: unknown[]): void` - Log at ERROR level
 - `with(...args: unknown[]): Logger` - Returns a new `Logger` with additional K/V pairs added
 
+All methods accept a message string followed by optional key-value pairs.
+
 ### Functions
 
 - `group(key: string, ...args: unknown[]): unknown[]` - Create K/V pairs based on key prefix
-
-All methods accept a message string followed by optional key-value pairs.
 
 ## License
 
