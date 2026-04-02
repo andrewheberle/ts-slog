@@ -118,3 +118,33 @@ export class Logger {
         return new Logger(this.settings, newContextFields)
     }
 }
+
+/**
+ * 
+ * @param key - prefix for all keys in the group 
+ * @param args - K/V pairs to include in the group (must be an even number of arguments)
+ * @returns An array of K/V pairs with keys prefixed by the group key
+ * @throws LoggerError if the number of arguments is not even or if any key is not a string
+ * 
+ * Example usage with Logger:
+ * 
+ * const logger = new Logger()
+ * logger.info("User logged in", ...group("user", "id", 123, "name", "Alice"))
+ */
+export const group = (key: string, ...args: unknown[]): unknown[] => {
+    if (args.length % 2 !== 0) {
+        throw new LoggerError("group() requires an even number of arguments (key-value pairs)")
+    }
+
+    const output: unknown[] = []
+
+    for (let i = 0; i < args.length; i += 2) {
+        if (typeof args[i] !== "string") {
+            throw new LoggerError("key must be a string")
+        }
+
+        output.push(key + "." + args[i] as string, args[i + 1])
+    }
+
+    return output
+}

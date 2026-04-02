@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest"
-import { Logger, LoggerError, LogLevel } from "../src"
+import { group, Logger, LoggerError, LogLevel } from "../src"
 
 describe("Logger", () => {
     describe("constructor", () => {
@@ -279,6 +279,154 @@ describe("Logger", () => {
             expect(handler).toHaveBeenCalledWith({
                 level: 'INFO',
                 message: 'test message'
+            })
+        })
+    })
+
+    describe('group function', () => {
+        it('should create new logger with context fields', () => {
+            const handler = vi.fn()
+            const logger = new Logger({ logHandler: handler, minLevel: LogLevel.Info })
+            
+            const contextLogger = logger.with(...group("user", "id", '123'))
+            contextLogger.info('test message')
+            
+            expect(handler).toHaveBeenCalledWith({
+                level: 'INFO',
+                message: 'test message',
+                'user.id': '123'
+            })
+        })
+
+        it('should be chainable', () => {
+            const handler = vi.fn()
+            const logger = new Logger({ logHandler: handler, minLevel: LogLevel.Info })
+            
+            const contextLogger = logger
+                .with(...group("user", "id", '123'))
+                .with(...group("request", "id", 'abc'))
+            
+            contextLogger.info('test message')
+            
+            expect(handler).toHaveBeenCalledWith({
+                level: 'INFO',
+                message: 'test message',
+                'user.id': '123',
+                'request.id': 'abc'
+            })
+        })
+
+        it('should maintain context fields across multiple log calls', () => {
+            const handler = vi.fn()
+            const logger = new Logger({ logHandler: handler, minLevel: LogLevel.Info })
+            
+            const contextLogger = logger.with(...group("user", "id", '123'))
+            
+            contextLogger.info('first message')
+            contextLogger.info('second message')
+            
+            expect(handler).toHaveBeenCalledTimes(2)
+            expect(handler).toHaveBeenNthCalledWith(1, {
+                level: 'INFO',
+                message: 'first message',
+                'user.id': '123'
+            })
+            expect(handler).toHaveBeenNthCalledWith(2, {
+                level: 'INFO',
+                message: 'second message',
+                'user.id': '123'
+            })
+        })
+
+        it('should allow per-call args to be added alongside group context fields', () => {
+            const handler = vi.fn()
+            const logger = new Logger({ logHandler: handler, minLevel: LogLevel.Info })
+            
+            const contextLogger = logger.with(...group("user", "id", '123'))
+            contextLogger.info('test message', 'action', 'login')
+            
+            expect(handler).toHaveBeenCalledWith({
+                level: 'INFO',
+                message: 'test message',
+                'user.id': '123',
+                action: 'login'
+            })
+        })
+
+        it('should allow per-call args to override context fields', () => {
+            const handler = vi.fn()
+            const logger = new Logger({ logHandler: handler, minLevel: LogLevel.Info })
+            
+            const contextLogger = logger.with(...group("user", "id", '123'))
+            contextLogger.info('test message', 'user.id', '456')
+            
+            expect(handler).toHaveBeenCalledWith({
+                level: 'INFO',
+                message: 'test message',
+                'user.id': '456'
+            })
+        })
+
+        it('should not affect original logger', () => {
+            const handler = vi.fn()
+            const logger = new Logger({ logHandler: handler, minLevel: LogLevel.Info })
+            
+            const contextLogger = logger.with(...group("user", "id", '123'))
+            
+            logger.info('original logger')
+            contextLogger.info('context logger')
+            
+            expect(handler).toHaveBeenNthCalledWith(1, {
+                level: 'INFO',
+                message: 'original logger'
+            })
+            expect(handler).toHaveBeenNthCalledWith(2, {
+                level: 'INFO',
+                message: 'context logger',
+                'user.id': '123'
+            })
+        })
+
+        it('should throw error for odd number of arguments', () => {
+            const logger = new Logger()
+            
+            expect(() => {
+                group("user", "id", '123', 'orphanKey')
+            }).toThrow(LoggerError)
+            expect(() => {
+                group("user", "id", '123', 'orphanKey')
+            }).toThrow('group() requires an even number of arguments (key-value pairs)')
+        })
+
+        it('should throw error when key is not a string', () => {
+            const logger = new Logger()
+            
+            expect(() => {
+                group("user", 123, 'value')
+            }).toThrow(LoggerError)
+            expect(() => {
+                group("user", 123, 'value')
+            }).toThrow('key must be a string')
+        })
+
+        it('should inherit settings from parent logger', () => {
+            const handler = vi.fn()
+            const logger = new Logger({ 
+                logHandler: handler, 
+                minLevel: LogLevel.Warning 
+            })
+            
+            const contextLogger = logger.with(...group('user', 'id', '123'))
+            
+            contextLogger.debug('should not log')
+            contextLogger.info('should not log')
+            contextLogger.warn('should log')
+            
+            expect(handler).toHaveBeenCalledTimes(1)
+            expect(handler).toHaveBeenCalledWith({
+                level: 'WARNING',
+                message: 'should log',
+                'user.id': '123'
             })
         })
     })

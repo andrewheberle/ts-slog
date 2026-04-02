@@ -33,8 +33,8 @@ The logger supports four log levels:
 ### Configuration
 
 Configure the minimum log level when creating a logger instance:
-```typescript
-import { Logger, LogLevel } from '@andrewheberle/ts-slog'
+```ts
+import { Logger, LogLevel } from "@andrewheberle/ts-slog"
 
 // Only log warnings and errors
 const logger = new Logger({ minLevel: LogLevel.Warning })
@@ -49,7 +49,11 @@ logger.error("This will be logged too")
 
 Add key-value pairs to log entries by passing additional arguments:
 
-```typescript
+```ts
+import { Logger } from "@andrewheberle/ts-slog"
+
+const logger = new Logger()
+
 logger.info(
     "User logged in",
     "userId", 123,
@@ -63,6 +67,31 @@ logger.info(
 //   message: 'User logged in',
 //   userId: 123,
 //   username: 'john.doe',
+//   ip: '192.168.1.1'
+// }
+```
+
+### Groups
+
+A group of K/V pairs may be grouped as follows:
+
+```ts
+import { group, Logger } from "@andrewheberle/ts-slog"
+
+const logger = new Logger()
+
+logger.info(
+    "User logged in",
+    ...group("user", "id", 123, "username", "john.doe"),
+    "ip", "192.168.1.1"
+)
+
+// Output:
+// {
+//   level: 'INFO',
+//   message: 'User logged in',
+//   user.id: 123,
+//   user.username: 'john.doe',
 //   ip: '192.168.1.1'
 // }
 ```
@@ -85,6 +114,10 @@ Creates a new logger instance.
 - `warn(message: string, ...args: unknown[]): void` - Log at WARNING level
 - `error(message: string, ...args: unknown[]): void` - Log at ERROR level
 - `with(...args: unknown[]): Logger` - Returns a new `Logger` with additional K/V pairs added
+
+### Functions
+
+- `group(key: string, ...args: unknown[]): unknown[]` - Create K/V pairs based on key prefix
 
 All methods accept a message string followed by optional key-value pairs.
 
