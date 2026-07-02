@@ -98,7 +98,9 @@ logger.info(
 
 ### Text Output
 
-By default, `logHandler` receives the log entry as an object and passes it straight to `console.log`. Use the built-in `TextHandler` instead to format entries as a single line of text:
+By default, the default `logHandler` passes the log object straight to
+`console.log`. Use the built-in `TextHandler` instead to format entries
+as a single line of text:
 
 ```ts
 import { Logger, TextHandler } from "@andrewheberle/ts-slog"
