@@ -304,6 +304,16 @@ describe("Logger", () => {
             consoleSpy.mockRestore()
         })
 
+        it('should quote string values containing spaces', () => {
+            const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+            const logger = new Logger({ logHandler: TextHandler, minLevel: LogLevel.Info })
+
+            logger.info('User logged in', 'name', 'John Doe', 'userId', 123)
+
+            expect(consoleSpy).toHaveBeenCalledWith('INFO User logged in name="John Doe" userId=123')
+            consoleSpy.mockRestore()
+        })
+
         it('should JSON.stringify object values', () => {
             const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
             const logger = new Logger({ logHandler: TextHandler, minLevel: LogLevel.Info })
