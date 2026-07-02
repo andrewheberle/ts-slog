@@ -131,11 +131,23 @@ export class Logger {
  * logger.info("User logged in", "userId", 123)
  * // INFO User logged in userId=123
  */
+const formatValue = (value: unknown): string => {
+    if (typeof value === "object" && value !== null) {
+        return JSON.stringify(value)
+    }
+
+    if (typeof value === "string" && /\s/.test(value)) {
+        return JSON.stringify(value)
+    }
+
+    return String(value)
+}
+
 export const TextHandler = (output: Record<string, unknown>): void => {
     const { level, message, ...rest } = output
 
     const kvPairs = Object.entries(rest)
-        .map(([key, value]) => `${key}=${typeof value === "object" && value !== null ? JSON.stringify(value) : String(value)}`)
+        .map(([key, value]) => `${key}=${formatValue(value)}`)
         .join(" ")
 
     console.log(kvPairs ? `${level} ${message} ${kvPairs}` : `${level} ${message}`)

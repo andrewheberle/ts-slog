@@ -113,6 +113,15 @@ logger.info("User logged in", "userId", 123, "action", "login")
 // INFO User logged in userId=123 action=login
 ```
 
+String values containing whitespace are quoted:
+
+```ts
+logger.info("User logged in", "name", "John Doe", "userId", 123)
+
+// Output:
+// INFO User logged in name="John Doe" userId=123
+```
+
 ## API
 
 ### `new Logger(settings?)`
