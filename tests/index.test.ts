@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest"
-import { group, Logger, LoggerError, LogLevel } from "../src"
+import { group, Logger, LoggerError, LogLevel, TextHandler } from "../src"
 
 describe("Logger", () => {
     describe("constructor", () => {
@@ -280,6 +280,59 @@ describe("Logger", () => {
                 level: 'INFO',
                 message: 'test message'
             })
+        })
+    })
+
+    describe('TextHandler', () => {
+        it('should format level and message with no extra fields', () => {
+            const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+            const logger = new Logger({ logHandler: TextHandler, minLevel: LogLevel.Info })
+
+            logger.info('test message')
+
+            expect(consoleSpy).toHaveBeenCalledWith('INFO test message')
+            consoleSpy.mockRestore()
+        })
+
+        it('should format key-value pairs as key=value', () => {
+            const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+            const logger = new Logger({ logHandler: TextHandler, minLevel: LogLevel.Info })
+
+            logger.info('User logged in', 'userId', 123, 'action', 'login')
+
+            expect(consoleSpy).toHaveBeenCalledWith('INFO User logged in userId=123 action=login')
+            consoleSpy.mockRestore()
+        })
+
+        it('should JSON.stringify object values', () => {
+            const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+            const logger = new Logger({ logHandler: TextHandler, minLevel: LogLevel.Info })
+
+            logger.info('Request received', 'meta', { ip: '1.2.3.4' })
+
+            expect(consoleSpy).toHaveBeenCalledWith('INFO Request received meta={"ip":"1.2.3.4"}')
+            consoleSpy.mockRestore()
+        })
+
+        it('should format undefined values as the string undefined', () => {
+            const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+            const logger = new Logger({ logHandler: TextHandler, minLevel: LogLevel.Info })
+
+            logger.info('test message', 'key1', 'value1', 'key2')
+
+            expect(consoleSpy).toHaveBeenCalledWith('INFO test message key1=value1 key2=undefined')
+            consoleSpy.mockRestore()
+        })
+
+        it('should include context fields added via with()', () => {
+            const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
+            const logger = new Logger({ logHandler: TextHandler, minLevel: LogLevel.Info })
+
+            const contextLogger = logger.with('userId', '123')
+            contextLogger.info('test message', 'action', 'login')
+
+            expect(consoleSpy).toHaveBeenCalledWith('INFO test message userId=123 action=login')
+            consoleSpy.mockRestore()
         })
     })
 

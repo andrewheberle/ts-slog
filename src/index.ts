@@ -120,6 +120,28 @@ export class Logger {
 }
 
 /**
+ * A logHandler that formats output as a single line of text in the form:
+ * `${level} ${message} key=value ...` and writes it via console.log
+ *
+ * @param output - The log entry to format and write
+ *
+ * Example usage with Logger:
+ *
+ * const logger = new Logger({ logHandler: TextHandler })
+ * logger.info("User logged in", "userId", 123)
+ * // INFO User logged in userId=123
+ */
+export const TextHandler = (output: Record<string, unknown>): void => {
+    const { level, message, ...rest } = output
+
+    const kvPairs = Object.entries(rest)
+        .map(([key, value]) => `${key}=${typeof value === "object" && value !== null ? JSON.stringify(value) : String(value)}`)
+        .join(" ")
+
+    console.log(kvPairs ? `${level} ${message} ${kvPairs}` : `${level} ${message}`)
+}
+
+/**
  *
  * @param key - prefix for all keys in the group
  * @param args - K/V pairs to include in the group (must be an even number of arguments)
