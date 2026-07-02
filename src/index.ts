@@ -120,14 +120,14 @@ export class Logger {
 }
 
 /**
- * 
- * @param key - prefix for all keys in the group 
+ *
+ * @param key - prefix for all keys in the group
  * @param args - K/V pairs to include in the group (must be an even number of arguments)
  * @returns An array of K/V pairs with keys prefixed by the group key
  * @throws LoggerError if the number of arguments is not even or if any key is not a string
- * 
+ *
  * Example usage with Logger:
- * 
+ *
  * const logger = new Logger()
  * logger.info("User logged in", ...group("user", "id", 123, "name", "Alice"))
  */
