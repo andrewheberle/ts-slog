@@ -69,10 +69,10 @@
 		},
 		"hooks": {
 			"after:bump": "npx auto-changelog -p"
+		},
+		"npm": {
+			"publish": true,
+			"skipChecks": true
 		}
-	},
-	"npm": {
-		"publish": true,
-		"skipChecks": true
 	}
 }
