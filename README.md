@@ -96,6 +96,23 @@ logger.info(
 // }
 ```
 
+### Text Output
+
+By default, the default `logHandler` passes the log object straight to
+`console.log`. Use the built-in `TextHandler` instead to format entries
+as a single line of text:
+
+```ts
+import { Logger, TextHandler } from "@andrewheberle/ts-slog"
+
+const logger = new Logger({ logHandler: TextHandler })
+
+logger.info("User logged in", "userId", 123, "action", "login")
+
+// Output:
+// INFO User logged in userId=123 action=login
+```
+
 ## API
 
 ### `new Logger(settings?)`
@@ -120,6 +137,7 @@ All methods accept a message string followed by optional key-value pairs.
 ### Functions
 
 - `group(key: string, ...args: unknown[]): unknown[]` - Create K/V pairs based on key prefix
+- `TextHandler(output: Record<string, unknown>): void` - A `logHandler` that formats log entries as text (`level message key=value ...`) and writes them via `console.log`
 
 ## License
 
