@@ -63,7 +63,7 @@ logger.info(
 
 // Output:
 // {
-//   level: 'INFO',
+//   level: 'info',
 //   message: 'User logged in',
 //   userId: 123,
 //   username: 'john.doe',
@@ -88,7 +88,7 @@ logger.info(
 
 // Output:
 // {
-//   level: 'INFO',
+//   level: 'info',
 //   message: 'User logged in',
 //   user.id: 123,
 //   user.username: 'john.doe',
@@ -119,7 +119,7 @@ String values containing whitespace are quoted:
 logger.info("User logged in", "name", "John Doe", "userId", 123)
 
 // Output:
-// INFO User logged in name="John Doe" userId=123
+// INFO: User logged in name="John Doe" userId=123
 ```
 
 ## API
@@ -135,10 +135,10 @@ Creates a new logger instance.
 
 ### Methods
 
-- `debug(message: string, ...args: unknown[]): void` - Log at DEBUG level
-- `info(message: string, ...args: unknown[]): void` - Log at INFO level
-- `warn(message: string, ...args: unknown[]): void` - Log at WARNING level
-- `error(message: string, ...args: unknown[]): void` - Log at ERROR level
+- `debug(message: string, ...args: unknown[]): void` - Log at "debug" level
+- `info(message: string, ...args: unknown[]): void` - Log at "info" level
+- `warn(message: string, ...args: unknown[]): void` - Log at "warning" level
+- `error(message: string, ...args: unknown[]): void` - Log at "error" level
 - `with(...args: unknown[]): Logger` - Returns a new `Logger` with additional K/V pairs added
 
 All methods accept a message string followed by optional key-value pairs.

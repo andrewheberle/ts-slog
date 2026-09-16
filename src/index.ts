@@ -58,39 +58,39 @@ export class Logger {
     }
 
     /**
-     * Logs a message at DEBUG level
+     * Logs a message at debug level
      * @param message - Message for log entry
      * @param args    - K/V pairs to log
      */
     public debug(message: string, ...args: unknown[]): void {
-        this._log(LogLevel.Debug, "DEBUG", message, ...args)
+        this._log(LogLevel.Debug, "debug", message, ...args)
     }
 
     /**
-     * Logs a message at INFO level
+     * Logs a message at info level
      * @param message - Message for log entry
      * @param args    - K/V pairs to log
      */
     public info(message: string, ...args: unknown[]): void {
-        this._log(LogLevel.Info, "INFO", message, ...args)
+        this._log(LogLevel.Info, "info", message, ...args)
     }
 
     /**
-     * Logs a message at WARNING level
+     * Logs a message at warning level
      * @param message - Message for log entry
      * @param args    - K/V pairs to log
      */
     public warn(message: string, ...args: unknown[]): void {
-        this._log(LogLevel.Warning, "WARNING", message, ...args)
+        this._log(LogLevel.Warning, "warning", message, ...args)
     }
 
     /**
-     * Logs a message at ERROR level
+     * Logs a message at error level
      * @param message - Message for log entry
      * @param args    - K/V pairs to log
      */
     public error(message: string, ...args: unknown[]): void {
-        this._log(LogLevel.Error, "ERROR", message, ...args)
+        this._log(LogLevel.Error, "error", message, ...args)
     }
 
     /**
@@ -119,18 +119,6 @@ export class Logger {
     }
 }
 
-/**
- * A logHandler that formats output as a single line of text in the form:
- * `${level} ${message} key=value ...` and writes it via console.log
- *
- * @param output - The log entry to format and write
- *
- * Example usage with Logger:
- *
- * const logger = new Logger({ logHandler: TextHandler })
- * logger.info("User logged in", "userId", 123)
- * // INFO User logged in userId=123
- */
 const formatValue = (value: unknown): string => {
     if (typeof value === "object" && value !== null) {
         return JSON.stringify(value)
@@ -143,6 +131,18 @@ const formatValue = (value: unknown): string => {
     return String(value)
 }
 
+/**
+ * A logHandler that formats output as a single line of text in the form:
+ * `${level}: ${message} key=value ...` and writes it via console.log
+ *
+ * @param output - The log entry to format and write
+ *
+ * Example usage with Logger:
+ *
+ * const logger = new Logger({ logHandler: TextHandler })
+ * logger.info("User logged in", "userId", 123)
+ * // INFO: User logged in userId=123
+ */
 export const TextHandler = (output: Record<string, unknown>): void => {
     const { level, message, ...rest } = output
 
@@ -150,7 +150,11 @@ export const TextHandler = (output: Record<string, unknown>): void => {
         .map(([key, value]) => `${key}=${formatValue(value)}`)
         .join(" ")
 
-    console.log(kvPairs ? `${level} ${message} ${kvPairs}` : `${level} ${message}`)
+	// type check but should always be a string
+	if (typeof level !== "string") {
+        throw new LoggerError("level must be a string")
+    }
+    console.log(kvPairs ? `${level.toUpperCase()}: ${message} ${kvPairs}` : `${level.toUpperCase()}: ${message}`)
 }
 
 /**
