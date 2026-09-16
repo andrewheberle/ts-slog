@@ -28,7 +28,7 @@ describe("Logger", () => {
             logger.debug('test message')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'DEBUG',
+                level: 'debug',
                 message: 'test message'
             })
         })
@@ -40,7 +40,7 @@ describe("Logger", () => {
             logger.info('test message')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message'
             })
         })
@@ -52,7 +52,7 @@ describe("Logger", () => {
             logger.warn('test message')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'WARNING',
+                level: 'warning',
                 message: 'test message'
             })
         })
@@ -64,7 +64,7 @@ describe("Logger", () => {
             logger.error('test message')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'ERROR',
+                level: 'error',
                 message: 'test message'
             })
         })
@@ -76,7 +76,7 @@ describe("Logger", () => {
             logger.info('test message', 'userId', '123', 'action', 'login')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message',
                 userId: '123',
                 action: 'login'
@@ -114,7 +114,7 @@ describe("Logger", () => {
             logger.info('test message', 'key1', 'value1', 'key2')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message',
                 key1: 'value1',
                 key2: undefined
@@ -131,7 +131,7 @@ describe("Logger", () => {
             contextLogger.info('test message')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message',
                 userId: '123'
             })
@@ -148,7 +148,7 @@ describe("Logger", () => {
             contextLogger.info('test message')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message',
                 userId: '123',
                 requestId: 'abc'
@@ -166,12 +166,12 @@ describe("Logger", () => {
 
             expect(handler).toHaveBeenCalledTimes(2)
             expect(handler).toHaveBeenNthCalledWith(1, {
-                level: 'INFO',
+                level: 'info',
                 message: 'first message',
                 userId: '123'
             })
             expect(handler).toHaveBeenNthCalledWith(2, {
-                level: 'INFO',
+                level: 'info',
                 message: 'second message',
                 userId: '123'
             })
@@ -185,7 +185,7 @@ describe("Logger", () => {
             contextLogger.info('test message', 'action', 'login')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message',
                 userId: '123',
                 action: 'login'
@@ -200,7 +200,7 @@ describe("Logger", () => {
             contextLogger.info('test message', 'userId', '456')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message',
                 userId: '456'
             })
@@ -216,11 +216,11 @@ describe("Logger", () => {
             contextLogger.info('context logger')
 
             expect(handler).toHaveBeenNthCalledWith(1, {
-                level: 'INFO',
+                level: 'info',
                 message: 'original logger'
             })
             expect(handler).toHaveBeenNthCalledWith(2, {
-                level: 'INFO',
+                level: 'info',
                 message: 'context logger',
                 userId: '123'
             })
@@ -263,7 +263,7 @@ describe("Logger", () => {
 
             expect(handler).toHaveBeenCalledTimes(1)
             expect(handler).toHaveBeenCalledWith({
-                level: 'WARNING',
+                level: 'warning',
                 message: 'should log',
                 userId: '123'
             })
@@ -277,7 +277,7 @@ describe("Logger", () => {
             contextLogger.info('test message')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message'
             })
         })
@@ -290,7 +290,7 @@ describe("Logger", () => {
 
             logger.info('test message')
 
-            expect(consoleSpy).toHaveBeenCalledWith('INFO test message')
+            expect(consoleSpy).toHaveBeenCalledWith('INFO: test message')
             consoleSpy.mockRestore()
         })
 
@@ -300,7 +300,7 @@ describe("Logger", () => {
 
             logger.info('User logged in', 'userId', 123, 'action', 'login')
 
-            expect(consoleSpy).toHaveBeenCalledWith('INFO User logged in userId=123 action=login')
+            expect(consoleSpy).toHaveBeenCalledWith('INFO: User logged in userId=123 action=login')
             consoleSpy.mockRestore()
         })
 
@@ -310,7 +310,7 @@ describe("Logger", () => {
 
             logger.info('User logged in', 'name', 'John Doe', 'userId', 123)
 
-            expect(consoleSpy).toHaveBeenCalledWith('INFO User logged in name="John Doe" userId=123')
+            expect(consoleSpy).toHaveBeenCalledWith('INFO: User logged in name="John Doe" userId=123')
             consoleSpy.mockRestore()
         })
 
@@ -320,7 +320,7 @@ describe("Logger", () => {
 
             logger.info('Request received', 'meta', { ip: '1.2.3.4' })
 
-            expect(consoleSpy).toHaveBeenCalledWith('INFO Request received meta={"ip":"1.2.3.4"}')
+            expect(consoleSpy).toHaveBeenCalledWith('INFO: Request received meta={"ip":"1.2.3.4"}')
             consoleSpy.mockRestore()
         })
 
@@ -330,7 +330,7 @@ describe("Logger", () => {
 
             logger.info('test message', 'key1', 'value1', 'key2')
 
-            expect(consoleSpy).toHaveBeenCalledWith('INFO test message key1=value1 key2=undefined')
+            expect(consoleSpy).toHaveBeenCalledWith('INFO: test message key1=value1 key2=undefined')
             consoleSpy.mockRestore()
         })
 
@@ -341,7 +341,7 @@ describe("Logger", () => {
             const contextLogger = logger.with('userId', '123')
             contextLogger.info('test message', 'action', 'login')
 
-            expect(consoleSpy).toHaveBeenCalledWith('INFO test message userId=123 action=login')
+            expect(consoleSpy).toHaveBeenCalledWith('INFO: test message userId=123 action=login')
             consoleSpy.mockRestore()
         })
     })
@@ -355,7 +355,7 @@ describe("Logger", () => {
             contextLogger.info('test message')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message',
                 'user.id': '123'
             })
@@ -372,7 +372,7 @@ describe("Logger", () => {
             contextLogger.info('test message')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message',
                 'user.id': '123',
                 'request.id': 'abc'
@@ -390,12 +390,12 @@ describe("Logger", () => {
 
             expect(handler).toHaveBeenCalledTimes(2)
             expect(handler).toHaveBeenNthCalledWith(1, {
-                level: 'INFO',
+                level: 'info',
                 message: 'first message',
                 'user.id': '123'
             })
             expect(handler).toHaveBeenNthCalledWith(2, {
-                level: 'INFO',
+                level: 'info',
                 message: 'second message',
                 'user.id': '123'
             })
@@ -409,7 +409,7 @@ describe("Logger", () => {
             contextLogger.info('test message', 'action', 'login')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message',
                 'user.id': '123',
                 action: 'login'
@@ -424,7 +424,7 @@ describe("Logger", () => {
             contextLogger.info('test message', 'user.id', '456')
 
             expect(handler).toHaveBeenCalledWith({
-                level: 'INFO',
+                level: 'info',
                 message: 'test message',
                 'user.id': '456'
             })
@@ -440,11 +440,11 @@ describe("Logger", () => {
             contextLogger.info('context logger')
 
             expect(handler).toHaveBeenNthCalledWith(1, {
-                level: 'INFO',
+                level: 'info',
                 message: 'original logger'
             })
             expect(handler).toHaveBeenNthCalledWith(2, {
-                level: 'INFO',
+                level: 'info',
                 message: 'context logger',
                 'user.id': '123'
             })
@@ -483,7 +483,7 @@ describe("Logger", () => {
 
             expect(handler).toHaveBeenCalledTimes(1)
             expect(handler).toHaveBeenCalledWith({
-                level: 'WARNING',
+                level: 'warning',
                 message: 'should log',
                 'user.id': '123'
             })
