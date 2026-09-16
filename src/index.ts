@@ -150,6 +150,10 @@ export const TextHandler = (output: Record<string, unknown>): void => {
         .map(([key, value]) => `${key}=${formatValue(value)}`)
         .join(" ")
 
+	// type check but should always be a string
+	if (typeof level !== "string") {
+        throw new LoggerError("level must be a string")
+    }
     console.log(kvPairs ? `${level.toUpperCase()}: ${message} ${kvPairs}` : `${level.toUpperCase()}: ${message}`)
 }
 
