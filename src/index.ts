@@ -119,18 +119,6 @@ export class Logger {
     }
 }
 
-/**
- * A logHandler that formats output as a single line of text in the form:
- * `${level} ${message} key=value ...` and writes it via console.log
- *
- * @param output - The log entry to format and write
- *
- * Example usage with Logger:
- *
- * const logger = new Logger({ logHandler: TextHandler })
- * logger.info("User logged in", "userId", 123)
- * // INFO User logged in userId=123
- */
 const formatValue = (value: unknown): string => {
     if (typeof value === "object" && value !== null) {
         return JSON.stringify(value)
@@ -143,6 +131,18 @@ const formatValue = (value: unknown): string => {
     return String(value)
 }
 
+/**
+ * A logHandler that formats output as a single line of text in the form:
+ * `${level}: ${message} key=value ...` and writes it via console.log
+ *
+ * @param output - The log entry to format and write
+ *
+ * Example usage with Logger:
+ *
+ * const logger = new Logger({ logHandler: TextHandler })
+ * logger.info("User logged in", "userId", 123)
+ * // INFO: User logged in userId=123
+ */
 export const TextHandler = (output: Record<string, unknown>): void => {
     const { level, message, ...rest } = output
 
@@ -150,7 +150,7 @@ export const TextHandler = (output: Record<string, unknown>): void => {
         .map(([key, value]) => `${key}=${formatValue(value)}`)
         .join(" ")
 
-    console.log(kvPairs ? `${level} ${message} ${kvPairs}` : `${level} ${message}`)
+    console.log(kvPairs ? `${level.toUpperCase()}: ${message} ${kvPairs}` : `${level.toUpperCase()}: ${message}`)
 }
 
 /**
