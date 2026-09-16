@@ -58,39 +58,39 @@ export class Logger {
     }
 
     /**
-     * Logs a message at DEBUG level
+     * Logs a message at debug level
      * @param message - Message for log entry
      * @param args    - K/V pairs to log
      */
     public debug(message: string, ...args: unknown[]): void {
-        this._log(LogLevel.Debug, "DEBUG", message, ...args)
+        this._log(LogLevel.Debug, "debug", message, ...args)
     }
 
     /**
-     * Logs a message at INFO level
+     * Logs a message at info level
      * @param message - Message for log entry
      * @param args    - K/V pairs to log
      */
     public info(message: string, ...args: unknown[]): void {
-        this._log(LogLevel.Info, "INFO", message, ...args)
+        this._log(LogLevel.Info, "info", message, ...args)
     }
 
     /**
-     * Logs a message at WARNING level
+     * Logs a message at warning level
      * @param message - Message for log entry
      * @param args    - K/V pairs to log
      */
     public warn(message: string, ...args: unknown[]): void {
-        this._log(LogLevel.Warning, "WARNING", message, ...args)
+        this._log(LogLevel.Warning, "warning", message, ...args)
     }
 
     /**
-     * Logs a message at ERROR level
+     * Logs a message at error level
      * @param message - Message for log entry
      * @param args    - K/V pairs to log
      */
     public error(message: string, ...args: unknown[]): void {
-        this._log(LogLevel.Error, "ERROR", message, ...args)
+        this._log(LogLevel.Error, "error", message, ...args)
     }
 
     /**
